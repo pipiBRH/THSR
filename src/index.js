@@ -96,7 +96,7 @@ const puppeteer = require("puppeteer");
         flag = false;
       })
       .catch(async () => {
-        console.log("No tickets to table");
+        console.log("No tickets to booking");
       });
   }
   await page.waitForSelector('[name="SubmitButton"]');
