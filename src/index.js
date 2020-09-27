@@ -37,11 +37,44 @@ const puppeteer = require("puppeteer");
   // 13:00 = 100P
   // 13:30 = 130P
   // 14:00 = 200P
+  // 14:30 = 230P
+  // 15:00 = 300P
+  // 15:30 = 330P
+  // 16:00 = 400P
+  // 16:30 = 430P
+  // 17:00 = 500P
+  // 17:30 = 530P
+  // 18:00 = 600P
+  // 18:30 = 630P
+  // 19:00 = 700P
+  // 19:30 = 730P
+  // 20:00 = 800P
+  // 20:30 = 830P
+  // 21:00 = 900P
+  // 21:30 = 930P
+  // 22:00 = 1000P
+  // 22:30 = 1030P
+  // 23:00 = 1100P
+  // 23:30 = 1130P
 
-  var startStation = "7";
-  var destinationStation = "4";
-  var tableDate = "2020/06/27";
-  var tableTime = "800P";
+  // ticket numbers
+  // 0F = 0
+  // 1F = 2
+  // 2F = 3
+  // 3F = 3
+  // 4F = 4
+  // 5F = 5
+  // 6F = 6
+  // 7F = 7
+  // 8F = 8
+  // 9F = 9
+  // 10F = 10
+
+  var startStation = "4";
+  var destinationStation = "7";
+  var tableDate = "2020/09/30";
+  var tableTime = "700P";
+  var ticketNumbers = "1F"
   var idNumber = "your id number";
   var phone = "your phone number";
   var email = "your email";
@@ -75,6 +108,7 @@ const puppeteer = require("puppeteer");
   await page.waitForSelector('[name="selectDestinationStation"]');
   await page.waitForSelector('[name="toTimeInputField"]');
   await page.waitForSelector('[name="toTimeTable"]');
+  await page.waitForSelector('[name="ticketPanel:rows:0:ticketAmount"]');
   await page.waitFor(1000);
 
   page.select('[name="selectStartStation"]', startStation);
@@ -84,6 +118,7 @@ const puppeteer = require("puppeteer");
     await page.keyboard.type(tableDate);
   });
   page.select('[name="toTimeTable"]', tableTime);
+  page.select('[name="ticketPanel:rows:0:ticketAmount"]', ticketNumbers);
 
   await page.waitFor(10000);
 
@@ -96,7 +131,7 @@ const puppeteer = require("puppeteer");
         flag = false;
       })
       .catch(async () => {
-        console.log("No tickets to booking");
+        console.log("No tickets to booking. Waiting for retry...");
       });
   }
   await page.waitForSelector('[name="SubmitButton"]');
