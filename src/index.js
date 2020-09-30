@@ -70,11 +70,11 @@ const puppeteer = require("puppeteer");
   // 9F = 9
   // 10F = 10
 
-  var startStation = "4";
-  var destinationStation = "7";
-  var tableDate = "2020/09/30";
+  var startStation = "7";
+  var destinationStation = "4";
+  var tableDate = "2020/10/04";
   var tableTime = "700P";
-  var ticketNumbers = "1F"
+  var ticketNumbers = "2F"
   var idNumber = "your id number";
   var phone = "your phone number";
   var email = "your email";
@@ -124,9 +124,10 @@ const puppeteer = require("puppeteer");
 
   var flag = true;
   while (flag) {
+    await page.waitForSelector('[name="SubmitButton"]');
     await page.click('[name="SubmitButton"]');
     await page
-      .waitForSelector("#BookingS2Form", { timeout: 2000 })
+      .waitForSelector("#BookingS2Form", { timeout: 1000 })
       .then(() => {
         flag = false;
       })
