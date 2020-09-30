@@ -1,4 +1,5 @@
 # THSR ticket booking
+A Taiwan High Speed Rail booking bot
 
 ## Guide
 
