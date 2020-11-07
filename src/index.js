@@ -57,10 +57,10 @@ const puppeteer = require("puppeteer");
   // 23:00 = 1100P
   // 23:30 = 1130P
 
-  // ticket numbers
+  // Number of tickets
   // 0F = 0
-  // 1F = 2
-  // 2F = 3
+  // 1F = 1
+  // 2F = 2
   // 3F = 3
   // 4F = 4
   // 5F = 5
@@ -72,9 +72,9 @@ const puppeteer = require("puppeteer");
 
   var startStation = "7";
   var destinationStation = "4";
-  var tableDate = "2020/10/04";
+  var tableDate = "2020/11/08";
   var tableTime = "700P";
-  var ticketNumbers = "2F"
+  var ticketNumbers = "1F";
   var idNumber = "your id number";
   var phone = "your phone number";
   var email = "your email";
@@ -159,5 +159,5 @@ const puppeteer = require("puppeteer");
   await page.click('[name="agree"]');
   await page.click("#isSubmit");
 
-  //   await browser.close();
+  await browser.close();
 })();
