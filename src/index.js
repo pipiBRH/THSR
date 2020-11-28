@@ -120,7 +120,7 @@ const puppeteer = require("puppeteer");
   page.select('[name="toTimeTable"]', tableTime);
   page.select('[name="ticketPanel:rows:0:ticketAmount"]', ticketNumbers);
 
-  await page.waitFor(10000);
+  await page.waitForTimeout(10000);
 
   var flag = true;
   while (flag) {
@@ -141,7 +141,7 @@ const puppeteer = require("puppeteer");
   await page.waitForSelector("#idNumber");
   await page.waitForSelector("#mobilePhone");
   await page.waitForSelector("#memberSystemCheckBox");
-  await page.waitForSelector("#memberSystemCheckBox");
+  await page.waitForSelector("#memberShipCheckBox");
   await page.waitForSelector('[name="agree"]');
   await page.waitForSelector('[name="email"]');
 
@@ -155,9 +155,13 @@ const puppeteer = require("puppeteer");
     await page.keyboard.type(email);
   });
   await page.click("#memberSystemCheckBox");
-  await page.click("#memberSystemCheckBox");
+  await page.click("#memberShipCheckBox");
   await page.click('[name="agree"]');
   await page.click("#isSubmit");
 
+  await page.waitForSelector("#dialog #btn-custom2").then(async () => {
+    await page.click("#dialog #btn-custom2");
+  });
+  await page.waitForTimeout(10000);
   await browser.close();
 })();
