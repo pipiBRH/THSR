@@ -84,6 +84,8 @@ const puppeteer = require("puppeteer");
     // devtools: true,
     ignoreHTTPSErrors: true,
     // slowMo: 20,
+    // executablePath:
+    //   "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
     defaultViewport: { width: 1000, height: 1000 },
     ignoreDefaultArgs: ["--enable-automation"],
   });
@@ -119,6 +121,34 @@ const puppeteer = require("puppeteer");
   });
   page.select('[name="toTimeTable"]', tableTime);
   page.select('[name="ticketPanel:rows:0:ticketAmount"]', ticketNumbers);
+
+  var new_cookie = [
+    {
+      name: "IRS-SESSION",
+      value: "set your normal browser's cookie",
+      domain: "irs.thsrc.com.tw",
+      path: "/",
+      expires: -1,
+      size: 76,
+      httpOnly: false,
+      secure: false,
+      session: true,
+    },
+    {
+      name: "THSRC-IRS",
+      value: "set your normal browser's cookie",
+      domain: "irs.thsrc.com.tw",
+      path: "/",
+      expires: -1,
+      size: 90,
+      httpOnly: false,
+      secure: false,
+      session: true,
+    },
+  ];
+  var cookies = await page.cookies();
+  await page.deleteCookie(...cookies);
+  await page.setCookie(...new_cookie);
 
   await page.waitForTimeout(10000);
 
