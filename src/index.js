@@ -78,6 +78,8 @@ const puppeteer = require("puppeteer");
   var idNumber = "your id number";
   var phone = "your phone number";
   var email = "your email";
+  var IRS_SESSION = "set your normal browser's cookie"
+  var THSRC_IRS = "set your normal browser's cookie"
 
   const browser = await puppeteer.launch({
     headless: false,
@@ -125,25 +127,21 @@ const puppeteer = require("puppeteer");
   var new_cookie = [
     {
       name: "IRS-SESSION",
-      value: "set your normal browser's cookie",
+      value: IRS_SESSION,
       domain: "irs.thsrc.com.tw",
       path: "/",
       expires: -1,
-      size: 76,
       httpOnly: false,
       secure: false,
-      session: true,
     },
     {
       name: "THSRC-IRS",
-      value: "set your normal browser's cookie",
+      value: THSRC_IRS,
       domain: "irs.thsrc.com.tw",
       path: "/",
       expires: -1,
-      size: 90,
       httpOnly: false,
       secure: false,
-      session: true,
     },
   ];
   var cookies = await page.cookies();
