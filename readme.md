@@ -16,7 +16,7 @@ npm install
 ### Step3 set your login info
 
 ```
-Seting your booking info in src/index.js line73~85.
+Seting your booking info in src/index.js line73~82.
 ```
 
 ### Step3 launch bot

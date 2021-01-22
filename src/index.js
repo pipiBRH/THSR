@@ -78,8 +78,8 @@ const puppeteer = require("puppeteer");
   var idNumber = "your id number";
   var phone = "your phone number";
   var email = "your email";
-  var IRS_SESSION = "set your normal browser's cookie"
-  var THSRC_IRS = "set your normal browser's cookie"
+  var IRS_SESSION = "set your normal browser's cookie";
+  var THSRC_IRS = "set your normal browser's cookie";
 
   const browser = await puppeteer.launch({
     headless: false,
@@ -87,9 +87,10 @@ const puppeteer = require("puppeteer");
     ignoreHTTPSErrors: true,
     // slowMo: 20,
     // executablePath:
-    //   "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+    // "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
     defaultViewport: { width: 1000, height: 1000 },
     ignoreDefaultArgs: ["--enable-automation"],
+    args: ["--incognito"]
   });
   const page = await browser.newPage();
   await page.evaluateOnNewDocument(() => {
