@@ -70,9 +70,10 @@ const puppeteer = require("puppeteer");
   // 9F = 9
   // 10F = 10
 
-  var startStation = "7";
-  var destinationStation = "4";
-  var tableDate = "2020/11/08";
+  var startStation = "4";
+  var destinationStation = "7";
+  var tableDate = "2021/02/10";
+  var specifyTrainNumber = "1545";
   var tableTime = "700P";
   var ticketNumbers = "1F";
   var idNumber = "your id number";
@@ -80,6 +81,78 @@ const puppeteer = require("puppeteer");
   var email = "your email";
   var IRS_SESSION = "set your normal browser's cookie";
   var THSRC_IRS = "set your normal browser's cookie";
+  var ak_bmsc =
+    "set your normal browser's cookie";
+  var JSESSIONID = "set your normal browser's cookie";
+  var bm_mi =
+    "set your normal browser's cookie";
+  var bm_sv =
+    "set your normal browser's cookie";
+  var new_cookie = [
+    {
+      name: "IRS-SESSION",
+      value: IRS_SESSION,
+      domain: ".thsrc.com.tw",
+      path: "/",
+      expires: -1,
+      httpOnly: false,
+      secure: false,
+    },
+    {
+      name: "THSRC-IRS",
+      value: THSRC_IRS,
+      domain: ".thsrc.com.tw",
+      path: "/",
+      expires: -1,
+      httpOnly: false,
+      secure: false,
+    },
+    {
+      name: "ak_bmsc",
+      value: ak_bmsc,
+      domain: ".thsrc.com.tw",
+      path: "/",
+      expires: -1,
+      httpOnly: false,
+      secure: false,
+    },
+    {
+      name: "name",
+      value: "value",
+      domain: ".thsrc.com.tw",
+      path: "/",
+      expires: -1,
+      httpOnly: false,
+      secure: false,
+    },
+    {
+      name: "JSESSIONID",
+      value: JSESSIONID,
+      domain: ".thsrc.com.tw",
+      path: "/",
+      expires: -1,
+      httpOnly: false,
+      secure: false,
+    },
+    {
+      name: "bm_mi",
+      value: bm_mi,
+      domain: ".thsrc.com.tw",
+      path: "/",
+      expires: -1,
+      httpOnly: false,
+      secure: false,
+    },
+    {
+      name: "bm_sv",
+      value: bm_sv,
+      domain: ".thsrc.com.tw",
+      path: "/",
+      expires: -1,
+      httpOnly: false,
+      secure: false,
+    },
+  ];
 
   const browser = await puppeteer.launch({
     headless: false,
@@ -90,7 +163,7 @@ const puppeteer = require("puppeteer");
     // "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
     defaultViewport: { width: 1000, height: 1000 },
     ignoreDefaultArgs: ["--enable-automation"],
-    args: ["--incognito"]
+    args: ["--incognito"],
   });
   const page = await browser.newPage();
   await page.evaluateOnNewDocument(() => {
@@ -122,50 +195,41 @@ const puppeteer = require("puppeteer");
     await page.click('[name="toTimeInputField"]', { clickCount: 3 });
     await page.keyboard.type(tableDate);
   });
-  page.select('[name="toTimeTable"]', tableTime);
-  page.select('[name="ticketPanel:rows:0:ticketAmount"]', ticketNumbers);
 
-  var new_cookie = [
-    {
-      name: "IRS-SESSION",
-      value: IRS_SESSION,
-      domain: "irs.thsrc.com.tw",
-      path: "/",
-      expires: -1,
-      httpOnly: false,
-      secure: false,
-    },
-    {
-      name: "THSRC-IRS",
-      value: THSRC_IRS,
-      domain: "irs.thsrc.com.tw",
-      path: "/",
-      expires: -1,
-      httpOnly: false,
-      secure: false,
-    },
-  ];
-  var cookies = await page.cookies();
-  await page.deleteCookie(...cookies);
-  await page.setCookie(...new_cookie);
+  var checkLoopFlag = "#BookingS2Form";
+  if (specifyTrainNumber !== "") {
+    await page.click("#bookingMethod_1");
+    await page.type('[name="toTrainIDInputField"]', specifyTrainNumber);
+    checkLoopFlag = "#idNumber";
+  } else {
+    page.select('[name="toTimeTable"]', tableTime);
+  }
+
+  page.select('[name="ticketPanel:rows:0:ticketAmount"]', ticketNumbers);
 
   await page.waitForTimeout(10000);
 
   var flag = true;
   while (flag) {
+    // var cookies = await page.cookies();
+    // await page.deleteCookie(...cookies);
+    await page.setCookie(...new_cookie);
+
     await page.waitForSelector('[name="SubmitButton"]');
     await page.click('[name="SubmitButton"]');
     await page
-      .waitForSelector("#BookingS2Form", { timeout: 1000 })
-      .then(() => {
+      .waitForSelector(checkLoopFlag, { timeout: 2000 })
+      .then(async () => {
         flag = false;
+        if (specifyTrainNumber === "") {
+          await page.waitForSelector('[name="SubmitButton"]');
+          await page.click('[name="SubmitButton"]');
+        }
       })
       .catch(async () => {
         console.log("No tickets to booking. Waiting for retry...");
       });
   }
-  await page.waitForSelector('[name="SubmitButton"]');
-  await page.click('[name="SubmitButton"]');
 
   await page.waitForSelector("#idNumber");
   await page.waitForSelector("#mobilePhone");
