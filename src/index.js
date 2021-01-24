@@ -187,7 +187,7 @@ const puppeteer = require("puppeteer");
   await page.waitForSelector('[name="toTimeInputField"]');
   await page.waitForSelector('[name="toTimeTable"]');
   await page.waitForSelector('[name="ticketPanel:rows:0:ticketAmount"]');
-  await page.waitFor(1000);
+  await page.waitForTimeout(1000);
 
   page.select('[name="selectStartStation"]', startStation);
   page.select('[name="selectDestinationStation"]', destinationStation);
