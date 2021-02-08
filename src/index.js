@@ -151,7 +151,7 @@ const puppeteer = require("puppeteer");
       expires: -1,
       httpOnly: false,
       secure: false,
-    },
+    }
   ];
 
   const browser = await puppeteer.launch({
@@ -218,10 +218,11 @@ const puppeteer = require("puppeteer");
     await page.waitForSelector('[name="SubmitButton"]');
     await page.click('[name="SubmitButton"]');
     await page
-      .waitForSelector(checkLoopFlag, { timeout: 2000 })
+      .waitForSelector(checkLoopFlag, { timeout: 3000 })
       .then(async () => {
         flag = false;
         if (specifyTrainNumber === "") {
+          await page.setCookie(...new_cookie);
           await page.waitForSelector('[name="SubmitButton"]');
           await page.click('[name="SubmitButton"]');
         }
@@ -237,6 +238,7 @@ const puppeteer = require("puppeteer");
   await page.waitForSelector("#memberShipCheckBox");
   await page.waitForSelector('[name="agree"]');
   await page.waitForSelector('[name="email"]');
+  await page.setCookie(...new_cookie);
 
   await page.focus("#idNumber").then(async () => {
     await page.keyboard.type(idNumber);
@@ -256,5 +258,5 @@ const puppeteer = require("puppeteer");
     await page.click("#dialog #btn-custom2");
   });
   await page.waitForTimeout(10000);
-  await browser.close();
+  // await browser.close();
 })();
